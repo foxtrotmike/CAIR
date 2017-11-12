@@ -19,5 +19,5 @@ http://faculty.pieas.edu.pk/fayyaz/software.html
 You can run the code in Matlab. The file is: compec.m.
 
 ## References:
-[1] Avidan, Shai, and Ariel Shamir. "Seam carving for content-aware image resizing." ACM Transactions on graphics (TOG). Vol. 26. No. 3. ACM, 2007.
+[1] Avidan, Shai, and Ariel Shamir. ["Seam carving for content-aware image resizing."](https://dl.acm.org/citation.cfm?id=1276390) ACM Transactions on graphics (TOG). Vol. 26. No. 3. ACM, 2007.
 
