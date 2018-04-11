@@ -10,7 +10,7 @@ returnImage=(zeros(rows ,cols+1,t));
 if(s)
     for i=1:rows
         for k=1:t            
-            image(i,SeamVector(i):min(SeamVector(i)+0,cols),k)=M;            
+            image(i,SeamVector(i):min(SeamVector(i)+1,cols),k)=M;            
             returnImage(i,:,k)=[image(i,1:SeamVector(i),k)  M image(i,SeamVector(i)+1:cols,k)];
             %this step makes sure that the same seam is not selected over
             %and over again 
@@ -18,9 +18,9 @@ if(s)
     end
 else
     for i=1:rows
-        for k=1:t
-            z=mean(mean(image(max(i-0,1):min(i+0,rows),max(SeamVector(i)-1,1):min(SeamVector(i)+1,cols),k)));
-            %z = 0; 
+        for k=1:t            
+            z=mean(mean(image(max(i-0,1):min(i+0,rows),max(SeamVector(i)-0,1):min(SeamVector(i)+1,cols),k)));
+            z = 0; 
             returnImage(i,:,k)=[image(i,1:SeamVector(i),k)  z image(i,SeamVector(i)+1:cols,k)];
         end
     end

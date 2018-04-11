@@ -22,7 +22,7 @@ function varargout = compec(varargin)
 
 % Edit the above text to modify the response to help compec
 
-% Last Modified by GUIDE v2.5 03-Dec-2016 02:24:41
+% Last Modified by GUIDE v2.5 10-Apr-2018 23:03:18
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -89,16 +89,19 @@ end
 
 FullPathName = [PathName,FileName];
 image=imread(FullPathName);
+set(handles.text7,'String',FullPathName);
+image = imread(FullPathName);
+
 axes(handles.axes1);
 %a1=axes;
-imshow(imread(FullPathName));
+imshow(image);
 %image(imread(FullPathName))
 
-col=size(imread(FullPathName),1);
-rows=size(imread(FullPathName),2);
+col=size(image,1);
+rows=size(image,2);
 set(handles.text6,'String',col);
 set(handles.text4,'String',rows);
-set(handles.text7,'String',FullPathName);
+
 
 
 % --------------------------------------------------------------------
@@ -394,32 +397,18 @@ imageName=FullPathName;
 z=get(handles.radioHeight,'Value');
 
 
-inputImage=double(imread(imageName));
+%inputImage=double(imread(imageName));
+inputImage=(imread(imageName));
 %figure,imshow(uint8(inputImage))
+axes(handles.axes1);
+%BW = roipoly(inputImage);
 
-%n=70; %n is the number of rows to add
-if(z==true)
-    inputImage=imrotate(inputImage,90);
-end
-%%
-%%apply sobel filter to get Gradient Image
-ENERGY_IMG=getEnergyImage(inputImage);
-for i=1:n
-    %find a seam vector from the given energy map
-    seamVector=findSeam(ENERGY_IMG);
-    
-    %add seam to the original image
-    inputImage = addSeam(inputImage,seamVector);
-    
-    %also add seam in energy image
-    ENERGY_IMG=addSeam(ENERGY_IMG,seamVector,1);
-end
-if(z==true)
-    inputImage=imrotate(inputImage,-90);
-end
+inputImage = Englarge(inputImage,n,z);
 axes(handles.axes2);
 imshow(uint8(round(inputImage)));
-
+%mwrite(uint8(round(inputImage)),'test.jpg')
+handles.output = inputImage;
+guidata(hObject, handles);
 % hObject    handle to Enlarge (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -454,7 +443,8 @@ end
 axes(handles.axes2);
 
 imshow(uint8(inputImage));
-
+handles.output = inputImage;
+guidata(hObject, handles);
 % handles    structure with handles and user data (see GUIDATA)
 
 
@@ -554,7 +544,8 @@ if(z==true)
 end
 axes(handles.axes2);
 imshow(uint8(inputImage));
-
+handles.output = inputImage;
+guidata(hObject, handles);
 % hObject    handle to cmdPreserve_Object (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -586,3 +577,31 @@ function pushbutton2_KeyPressFcn(hObject, eventdata, handles)
 %	Character: character interpretation of the key(s) that was pressed
 %	Modifier: name(s) of the modifier key(s) (i.e., control, shift) pressed
 % handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in cmdPreserveEnlarge_Object.
+function cmdPreserveEnlarge_Object_Callback(hObject, eventdata, handles)
+% hObject    handle to cmdPreserveEnlarge_Object (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+FullPathName=get(handles.text7,'String');
+n=get(handles.txtpixels,'String');
+n=str2num(n);
+imageName=FullPathName;
+z=get(handles.radioHeight,'Value');
+
+
+%inputImage=double(imread(imageName));
+inputImage=(imread(imageName));
+%figure,imshow(uint8(inputImage))
+axes(handles.axes1);
+BW = roipoly(inputImage);
+
+inputImage = Englarge(inputImage,n,z,BW);
+axes(handles.axes2);
+imshow(uint8(round(inputImage)));
+%imwrite(uint8(round(inputImage)),'test.jpg')
+handles.output = inputImage;
+guidata(hObject, handles);
+
+
